@@ -4,6 +4,7 @@ import com.assignment.retailstore.entity.User;
 import com.assignment.retailstore.repository.IUserRepository;
 import com.assignment.retailstore.service.impl.DiscountService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -23,29 +24,32 @@ public class DiscountServiceImplTest {
     @Test
     public void testEmployeeDiscount() {
         User user = mockUser();
+        Mockito.when(iUserRepository.findById(user.getId())).thenReturn(Mockito.any());
         double discount = discountService.calculateDiscount(user.getId(), 200);
         assertEquals(60, discount);
     }
 
     @Test
     public void testAffiliateDiscount() {
-        User user = new User();
+        User user = mockUser();
         user.setUserType("Affiliate");
+        Mockito.when(iUserRepository.findById(user.getId())).thenReturn(Mockito.any());
         double discount = discountService.calculateDiscount(user.getId(), 200);
         assertEquals(25, discount);
     }
 
     @Test
     public void testCustomerOver2YearsDiscount() {
-        User user = new User();
+        User user = mockUser();
         user.setCreatedDate(LocalDateTime.now().minusYears(3));
+        Mockito.when(iUserRepository.findById(user.getId())).thenReturn(Mockito.any());
         double discount = discountService.calculateDiscount(user.getId(), 200);
         assertEquals(15, discount);
     }
 
     @Test
     public void testCustomerLessThan2YearsNoDiscount() {
-        User user = new User();
+        User user = mockUser();
         user.setCreatedDate(LocalDateTime.now().minusYears(1));
         double discount = discountService.calculateDiscount(user.getId(), 200);
         assertEquals(10, discount);
