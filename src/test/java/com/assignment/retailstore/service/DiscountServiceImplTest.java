@@ -1,18 +1,24 @@
 package com.assignment.retailstore.service;
 
 import com.assignment.retailstore.entity.User;
+import com.assignment.retailstore.repository.IUserRepository;
 import com.assignment.retailstore.service.impl.DiscountService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class DiscountServiceImplTest {
 
-    @Mock
+    @Autowired
     DiscountService discountService;
+
+    @Autowired
+    IUserRepository iUserRepository;
 
     @Test
     public void testEmployeeDiscount() {
@@ -52,6 +58,9 @@ public class DiscountServiceImplTest {
         user.setFirstName("Test");
         user.setLastName("Test");
         user.setCreatedDate(LocalDateTime.of(2022, 1, 1, 0, 0));
+        user.setCreatedBy("Test");
+        user.setUpdatedDate(LocalDateTime.of(2022, 1, 1, 0, 0));
+        user.setUpdatedBy("Test");
         return user;
     }
 
